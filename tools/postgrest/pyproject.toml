@@ -1,0 +1,40 @@
+[tool.poetry]
+name = "herbaltea-postgrest"
+version = "0.1.0"
+description = ""
+authors = ["Yann Beauxis <pro@yannbeauxis.net>"]
+readme = "README.md"
+packages = [{include = "models"}]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+pydantic = "^1.10.8"
+python-jose = {extras = ["cryptography"], version = "^3.3.0"}
+
+[tool.poetry.group.migration.dependencies]
+alembic = "^1.11.1"
+sqlalchemy = "=1.4.40"
+sqlmodel = "^0.0.8"
+psycopg2 = "^2.9.6" # not working for Docker build
+# psycopg2-binary = "^2.9.6" # working for Dokcer build
+
+herbaltea-classifier = { path = "../../herbaltea-classifier", develop = true }
+
+[tool.poetry.group.test.dependencies]
+black = "^23.3.0"
+ruff = "^0.0.289"
+rope = "^1.7.0"
+mypy = "^1.2.0"
+types-requests = "^2.29.0.0"
+pytest = "^7.3.1"
+pytest-alembic = "^0.10.5"
+pytest-docker = "^1.0.1"
+python-on-whales = "^0.60.1"
+pytest-cov = "^4.1.0"
+
+[tool.poetry.group.dev.dependencies]
+pydantic-to-typescript = "^1.0.10"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

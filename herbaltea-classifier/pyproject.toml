@@ -1,0 +1,50 @@
+[tool.poetry]
+name = "herbaltea-classifier"
+version = "0.0.0"
+description = ""
+authors = ["Yann Beauxis <dev@yannbeauxis.net>"]
+readme = "README.md"
+packages = [
+    {include = "herbaltea_classifier"},
+]
+
+[build-system]
+requires = ["poetry-core>=1.0.0", "poetry-dynamic-versioning"]
+build-backend = "poetry_dynamic_versioning.backend"
+
+[tool.poetry-dynamic-versioning]
+enable = true
+bump = true
+vcs = "git"
+style = "semver"
+pattern = "^v(?P<base>\\d+\\.\\d+\\.\\d+)(-?((?P<stage>[a-zA-Z]+)\\.?(?P<revision>\\d+)?))?$"
+
+[tool.poetry-dynamic-versioning.substitution]
+files = ["*/version.py"]
+patterns = ["(^__version__: str = \")[^\"]*(\")"]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+pydantic = "^1.10"
+typer = {extras = ["all"], version = "^0.9.0"}
+autoscraper = "^1.1.14"
+pdftotext = "^2.2.2"
+python-jose = "^3.3.0"
+
+[tool.poetry.group.dev.dependencies]
+rope = "^1.7.0"
+
+[tool.poetry.group.test.dependencies]
+black = "^23.7.0"
+ruff = "^0.0.289"
+mypy = "^1.2.0"
+pytest = "^7.3.1"
+pytest-cov = "^4.0.0"
+mutmut = "^2.4.4"
+typeguard = "^4.1.3"
+types-requests = "^2.31.0.2"
+requests-mock = "^1.11.0"
+
+[tool.mutmut]
+runner = 'bash -c "mypy --strict --ignore-missing-import . && pytest -x --typeguard-packages=herbaltea_classifier"'
+disable_mutation_types="string,number"

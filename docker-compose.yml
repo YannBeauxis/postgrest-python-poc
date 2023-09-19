@@ -1,0 +1,52 @@
+version: "3.5"
+
+services:
+  db:
+    image: postgres
+    container_name: "db"
+    environment:
+      # - POSTGRES_SERVER=db
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=pass
+      - POSTGRES_DB=db
+    ports:
+      - 5432:5432
+
+  postgrest:
+    image: postgrest/postgrest
+    container_name: "postgrest"
+    environment:
+      - "PGRST_DB_URI=postgres://admin:pass@db:5432/db"
+      - "PGRST_DB_SCHEMAS=api"
+      - "PGRST_DB_ANON_ROLE=web_anon"
+      - "PGRST_JWT_SECRET=${AUTH_API_SECRET_KEY}"
+      - "PGRST_OPENAPI_MODE=follow-privileges"
+    ports:
+      - 3001:3000
+
+  auth_api:
+    build: ./api/auth
+    image: yannbeauxis/ema_scraper_auth_api
+    container_name: "auth_api"
+    env_file:
+      - .env
+    environment:
+      - "PORT=8000"
+    ports:
+      - 8000:8000
+
+  swagger_ui:
+    image: swaggerapi/swagger-ui
+    environment:
+      - "SWAGGER_JSON_URL=http://localhost:3001/"
+    ports:
+      - 8080:8080
+
+  docker_hoster:
+    # To be able to access to docker containers names in dns resolution.
+    image: dvdarias/docker-hoster
+    container_name: "docker_hoster"
+    restart: always
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock
+      - /etc/hosts:/tmp/hosts

@@ -1,0 +1,26 @@
+[flake8]
+
+# https://www.python.org/dev/peps/pep-0008/#maximum-line-length
+
+# Some teams strongly prefer a longer line length. For code maintained
+# exclusively or primarily by a team that can reach agreement on this
+# issue, it is okay to increase the line length limit up to 99
+# characters, provided that comments and docstrings are still wrapped
+# at 72 characters.
+
+max-line-length = 88
+# max-doc-length = 72
+
+# ignore = E702, W503
+
+exclude =
+    
+    .git,
+    .pytest_cache,
+    __pycache__,
+    venv,
+#    docs,
+#    media,
+#    migrations,
+#    settings,
+#    static
